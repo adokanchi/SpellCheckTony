@@ -5,7 +5,6 @@ import java.util.ArrayList;
  * A puzzle written by Zach Blick
  * for Adventures in Algorithms
  * At Menlo School in Atherton, CA
- *
  * Completed by: Tony Dokanchi
  * */
 
@@ -21,58 +20,37 @@ public class SpellCheck {
      */
 
     public String[] checkWords(String[] text, String[] dictionary) {
-
-        int maxLength = 0;
-        String longest = "";
+        DictionaryTree start = new DictionaryTree("");
+        DictionaryTree branch = start;
         for (String word : dictionary) {
-            if (word.length() > maxLength) {
-                maxLength = word.length();
-                longest = word;
+            for (int i = 0; i < word.length(); i++) {
+                int subBranchIndex = branch.indexOfWord(word.substring(0,i+1));
+                if (subBranchIndex != -1) {
+                    branch = branch.getSubBranches().get(subBranchIndex);
+                }
             }
-        }
-        System.out.println(maxLength);
-        System.out.println(longest);
-        return null;
-        /*
-        ArrayList<String> wrongWords = new ArrayList<String>();
-        for (String word : text) {
-            if (!inDict(word, dictionary)) {
-                wrongWords.add(word);
-            }
+            branch.getSubBranches().add(new DictionaryTree(word));
         }
 
-        String[] wrongWordsArr = new String[wrongWords.size()];
-        int i = 0;
-        while (!wrongWords.isEmpty()) {
-            wrongWordsArr[i] = wrongWords.remove(0);
-            i++;
+        ArrayList<String> wrong = new ArrayList<String>();
+        for (String word : text) {
+            if (!inDict(word, start)) {
+                wrong.add(word);
+            }
         }
-        return wrongWordsArr;
-        */
+        String[] wrongArr = new String[wrong.size()];
+        return wrong.toArray(wrongArr);
     }
 
-    public boolean inDict(String word, String[] dictionary) {
-        int startIndex = 0;
-        int endIndex = dictionary.length;
-
-        // Make dictionary lowercase
+    public boolean inDict(String word, DictionaryTree start) {
+        DictionaryTree branch = start;
         for (int i = 0; i < word.length(); i++) {
-
-            while (!word.substring(0,i).equals(dictionary[startIndex].substring(0,i))) {
-
+            int subBranchIndex = branch.indexOfWord(word.substring(0,i+1));
+            if (subBranchIndex != -1) {
+                branch = branch.getSubBranches().get(subBranchIndex);
             }
         }
-        while (!word.equals(dictionary[startIndex])) {
-            int middleIndex = (startIndex + endIndex) / 2;
-            if (dictionary[middleIndex].charAt(0) > word.charAt(0)) {
-                endIndex = middleIndex;
-            }
-            else {
-                startIndex = middleIndex;
-            }
-        }
+        return word.equals(branch.getWord());
 
-
-        return false;
     }
 }
