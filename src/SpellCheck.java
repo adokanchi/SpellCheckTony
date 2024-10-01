@@ -20,37 +20,25 @@ public class SpellCheck {
      */
 
     public String[] checkWords(String[] text, String[] dictionary) {
-        DictionaryTree start = new DictionaryTree("");
-        DictionaryTree branch = start;
-        for (String word : dictionary) {
-            for (int i = 0; i < word.length(); i++) {
-                int subBranchIndex = branch.indexOfWord(word.substring(0,i+1));
-                if (subBranchIndex != -1) {
-                    branch = branch.getSubBranches().get(subBranchIndex);
-                }
-            }
-            branch.getSubBranches().add(new DictionaryTree(word));
+        DictionaryTree dict = new DictionaryTree();
+        for (String s : dictionary) {
+            dict.insert(s);
         }
 
         ArrayList<String> wrong = new ArrayList<String>();
+        DictionaryTree wrongTree = new DictionaryTree();
+
         for (String word : text) {
-            if (!inDict(word, start)) {
+            if (!dict.lookup(word) && !wrongTree.lookup(word)) {
                 wrong.add(word);
+                wrongTree.insert(word);
             }
         }
+
         String[] wrongArr = new String[wrong.size()];
-        return wrong.toArray(wrongArr);
-    }
-
-    public boolean inDict(String word, DictionaryTree start) {
-        DictionaryTree branch = start;
-        for (int i = 0; i < word.length(); i++) {
-            int subBranchIndex = branch.indexOfWord(word.substring(0,i+1));
-            if (subBranchIndex != -1) {
-                branch = branch.getSubBranches().get(subBranchIndex);
-            }
+        for (int i = 0; i < wrong.size(); i++) {
+            wrongArr[i] = wrong.get(i);
         }
-        return word.equals(branch.getWord());
-
+        return wrongArr;
     }
 }

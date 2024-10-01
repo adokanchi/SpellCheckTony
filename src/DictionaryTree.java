@@ -1,28 +1,30 @@
-import java.util.ArrayList;
-
 public class DictionaryTree {
-    private String word;
-    private ArrayList<DictionaryTree> subBranches;
+    private DictionaryNode root;
 
-    public DictionaryTree(String word) {
-        subBranches = new ArrayList<DictionaryTree>();
-        this.word = word;
+    public DictionaryTree() {
+        root = new DictionaryNode();
     }
 
-    public ArrayList<DictionaryTree> getSubBranches() {
-        return subBranches;
+    public void insert(String s) {
+        DictionaryNode node = root;
+        for (int i = 0; i < s.length(); i++) {
+            DictionaryNode nextNode = root.getNext()[s.charAt(i)];
+            if (nextNode == null) {
+                nextNode = new DictionaryNode();
+            }
+            node = nextNode;
+        }
+        node.setWord();
     }
 
-    public String getWord() {
-        return word;
-    }
-
-    public int indexOfWord(String word) {
-        for (int i = 0; i < subBranches.size(); i++) {
-            if (subBranches.get(i).getWord().equals(word)) {
-                return i;
+    public boolean lookup(String s) {
+        DictionaryNode node = root;
+        for (int i = 0; i < s.length(); i++) {
+            node = node.getNext()[s.charAt(i)];
+            if (node == null) {
+                return false;
             }
         }
-        return -1;
+        return node.isWord();
     }
 }
