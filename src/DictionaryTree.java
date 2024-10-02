@@ -8,11 +8,10 @@ public class DictionaryTree {
     public void insert(String s) {
         DictionaryNode node = root;
         for (int i = 0; i < s.length(); i++) {
-            DictionaryNode nextNode = root.getNext()[s.charAt(i)];
-            if (nextNode == null) {
-                nextNode = new DictionaryNode();
+            if (node.getNext()[s.charAt(i)] == null) {
+                node.getNext()[s.charAt(i)] = new DictionaryNode();
             }
-            node = nextNode;
+            node = node.getNext(s.charAt(i));
         }
         node.setWord();
     }

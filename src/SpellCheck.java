@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Spell Check
@@ -29,7 +30,7 @@ public class SpellCheck {
         DictionaryTree wrongTree = new DictionaryTree();
 
         for (String word : text) {
-            if (!dict.lookup(word) && !wrongTree.lookup(word)) {
+            if (!wrongTree.lookup(word) && !dict.lookup(word)) {
                 wrong.add(word);
                 wrongTree.insert(word);
             }

@@ -18,4 +18,8 @@ public class DictionaryNode {
     public DictionaryNode[] getNext() {
         return next;
     }
+
+    public DictionaryNode getNext(int i) {
+        return next[i];
+    }
 }
