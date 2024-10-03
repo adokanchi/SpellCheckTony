@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Spell Check
@@ -21,6 +20,41 @@ public class SpellCheck {
      */
 
     public String[] checkWords(String[] text, String[] dictionary) {
+        return checkWordsTST(text, dictionary);
+    }
+
+    public String[] checkWordsTST(String[] text, String[] dictionary) {
+        // Create dict
+        TSTTree dict = new TSTTree();
+        for (String s : dictionary) {
+            dict.insert(s);
+        }
+
+        // Find non-duplicate wrong words
+        ArrayList<String> wrong = new ArrayList<String>();
+        TSTTree wrongTree = new TSTTree();
+
+        TSTTree rightTree = new TSTTree();
+
+        for (String word : text) {
+            if (rightTree.lookup(word) || wrongTree.lookup(word)) {
+                continue;
+            }
+            if (dict.lookup(word)) {
+                rightTree.insert(word);
+            }
+            else {
+                wrongTree.insert(word);
+                wrong.add(word);
+            }
+        }
+
+        // Return
+        String[] wrongArr = new String[wrong.size()];
+        return wrong.toArray(wrongArr);
+    }
+
+    public String[] checkWordsTrie(String[] text, String[] dictionary) {
         DictionaryTree dict = new DictionaryTree();
         for (String s : dictionary) {
             dict.insert(s);

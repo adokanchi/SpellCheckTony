@@ -7,7 +7,8 @@ Name: Tony Dokanchi
 | September 24 |  2-2:30pm  | I spoke with kids in class to float around ideas. Our best ideas at the moment are hash tables, some sort of map, or a tree that stores objects that hold information about valid words. I'll probably start by trying the tree approach? Not sure at the moment. |
 | September 29 |  6-6:30pm  |                                                I attempted to build an algorithm that stored all valid words in a tree. Currently, my code doesn't give any errors, but it does flag every word as incorrect. I can't find the source of the issue at the moment. |
 | September 30 | 12-12:30pm |                                                                                                            I built the algorithm detailed in class. At the moment, it's detecting every word as invalid, and IDK why. Probably an issue with the lookup() method. |
-| October 2    | 9:30-10am  |                                                                                                                          I fixed the bug, which was an issue with a variable being modified instead of an array value. I'm passing about half the test cases now. |
+| October 2    | 9:30-10am  |                                                                                                     I fixed the bug, which was an issue with a variable being modified instead of an array value. I'm passing about half the test cases now, because of timeouts. |
+| October 3    |  2-2:45pm  |                     Worked in class, spoke with Kieran/Mr. Blick and fixed all my issues. Sped up the code by keeping track of all valid words checked and checking that before checking the full dictionary TST. Passing all test cases with some room to spare. |
 
 
 To add a new row to the table, click into a cell and then hit shift-enter.

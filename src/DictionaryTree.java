@@ -1,5 +1,5 @@
 public class DictionaryTree {
-    private DictionaryNode root;
+    private final DictionaryNode root;
 
     public DictionaryTree() {
         root = new DictionaryNode();
