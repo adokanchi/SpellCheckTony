@@ -9,8 +9,6 @@ import java.util.ArrayList;
  * */
 
 public class SpellCheck {
-
-
     /**
      * checkWords finds all words in text that are not present in dictionary
      *
@@ -26,6 +24,7 @@ public class SpellCheck {
     public String[] checkWordsTST(String[] text, String[] dictionary) {
         // Create dict
         TSTTree dict = new TSTTree();
+        insert(dictionary, dict, dictionary.length / 2, 1);
         for (String s : dictionary) {
             dict.insert(s);
         }
@@ -33,10 +32,10 @@ public class SpellCheck {
         // Find non-duplicate wrong words
         ArrayList<String> wrong = new ArrayList<String>();
         TSTTree wrongTree = new TSTTree();
-
         TSTTree rightTree = new TSTTree();
 
         for (String word : text) {
+            // If we have seen this word before
             if (rightTree.lookup(word) || wrongTree.lookup(word)) {
                 continue;
             }
@@ -50,8 +49,22 @@ public class SpellCheck {
         }
 
         // Return
-        String[] wrongArr = new String[wrong.size()];
-        return wrong.toArray(wrongArr);
+        return wrong.toArray(new String[wrong.size()]);
+    }
+
+    // Recursive method that adds words from String[] dictionary to TSTTree dict in a binary search-like manner.
+    // Helps ensure dict has all paths of roughly equal length, speeding up lookups.
+    // Starts by taking index = length / 2 and count = 1
+    public void insert(String[] dictionary, TSTTree dict, int index, int count) {
+        if (count > Math.log(dictionary.length)) {
+            return;
+        }
+
+        dict.insert(dictionary[index]);
+
+        int offset = (int) (dictionary.length / Math.pow(2, count + 1));
+        insert(dictionary, dict, index - offset, count + 1);
+        insert(dictionary, dict, index + offset, count + 1);
     }
 
     public String[] checkWordsTrie(String[] text, String[] dictionary) {
@@ -62,18 +75,21 @@ public class SpellCheck {
 
         ArrayList<String> wrong = new ArrayList<String>();
         DictionaryTree wrongTree = new DictionaryTree();
+        DictionaryTree rightTree = new DictionaryTree();
 
         for (String word : text) {
-            if (!wrongTree.lookup(word) && !dict.lookup(word)) {
+            if (wrongTree.lookup(word) || rightTree.lookup(word)) {
+                continue;
+            }
+            if (dict.lookup(word)) {
+                rightTree.insert(word);
+            }
+            else {
                 wrong.add(word);
                 wrongTree.insert(word);
             }
         }
 
-        String[] wrongArr = new String[wrong.size()];
-        for (int i = 0; i < wrong.size(); i++) {
-            wrongArr[i] = wrong.get(i);
-        }
-        return wrongArr;
+        return wrong.toArray(new String[wrong.size()]);
     }
 }

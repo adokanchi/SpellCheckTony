@@ -28,10 +28,6 @@ public class TSTNode {
         return next;
     }
 
-    public TSTNode getNext(int i) {
-        return next[i];
-    }
-
     public char getValue() {
         return value;
     }

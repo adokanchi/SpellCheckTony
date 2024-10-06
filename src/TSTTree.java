@@ -7,7 +7,7 @@ public class TSTTree {
     private final TSTNode root;
 
     public TSTTree() {
-        root = new TSTNode('m');
+        root = new TSTNode();
     }
 
     public void insert(String s) {
@@ -19,8 +19,9 @@ public class TSTTree {
         TSTNode node = root;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (c == node.getValue()) { // If we're at the correct node
-                if (i == s.length() - 1) { // If this is the last letter, make it considered a word
+            // Middle path
+            if (c == node.getValue()) {
+                if (i == s.length() - 1) { // If this is the last letter
                     node.setWord();
                     return;
                 }
@@ -28,14 +29,16 @@ public class TSTTree {
                 if (node.getNext()[MIDDLE] == null) node.getNext()[MIDDLE] = new TSTNode(c);
                 node = node.getNext()[MIDDLE];
             }
-            else if (c < node.getValue()) { // If we need to move left
+            // Left path
+            else if (c < node.getValue()) {
                 // Move left
                 if (node.getNext()[LEFT] == null) node.getNext()[LEFT] = new TSTNode(c);
                 node = node.getNext()[LEFT];
                 // Don't accept the character
                 i--;
             }
-            else { // If we need to move right
+            // Right path
+            else {
                 // Move right
                 if (node.getNext()[RIGHT] == null) node.getNext()[RIGHT] = new TSTNode(c);
                 node = node.getNext()[RIGHT];
@@ -46,7 +49,7 @@ public class TSTTree {
     }
 
     public boolean lookup(String s) {
-        // If the tree is empty and there are no valid words
+        // If the tree is empty (there are zero valid words in the dictionary)
         if (root.getValue() == EMPTY) {
             return false;
         }
